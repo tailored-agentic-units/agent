@@ -1,6 +1,12 @@
 # Changelog
 
-## [0.1.0] - 2026-04-06
+## [v0.1.1] - 2026-04-06
+
+### Fixed
+
+- Fix nil pointer dereference in streaming responses when format returns `(nil, nil)` for unrecognized stream events (e.g., Converse format skipping unknown event types)
+
+## [v0.1.0] - 2026-04-06
 
 ### Added
 
