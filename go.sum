@@ -1,0 +1,8 @@
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/tailored-agentic-units/format v0.1.0 h1:jfExa9ILj2Jl+PWcaPZnVbPsZSFI4Gizb3NNmCPOqJE=
+github.com/tailored-agentic-units/format v0.1.0/go.mod h1:VAy9QSrmVBiaGmJ0o8ZPWIw1PbgR5oZrfMSNXOqkqqc=
+github.com/tailored-agentic-units/protocol v0.1.0 h1:wgjBbkZrV/HYTsHL3CsYeXo7wpXMfbakepzu8Xa2FMc=
+github.com/tailored-agentic-units/protocol v0.1.0/go.mod h1:94bxcZ/24BonUmqGz3L4+UNA91w7W/5QD9NFc7/AiCE=
+github.com/tailored-agentic-units/provider v0.1.0 h1:KZULfzgcWKtuRiDA/uwV6iptXapbwq9qf8z8XnpGGXc=
+github.com/tailored-agentic-units/provider v0.1.0/go.mod h1:+hBV7YFCshbgoohHeGHhiLNe4946wfDcVpkfvlrw4XM=
