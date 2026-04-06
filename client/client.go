@@ -287,6 +287,10 @@ func (c *client) executeStream(ctx context.Context, req request.Request) (<-chan
 				continue
 			}
 
+			if chunk == nil {
+				continue
+			}
+
 			select {
 			case output <- chunk:
 			case <-ctx.Done():
