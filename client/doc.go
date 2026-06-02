@@ -34,7 +34,7 @@
 // # Retry Logic
 //
 // The client retries on transient failures:
-//   - HTTP 429 (rate limit), 502, 503, 504 (server errors)
+//   - HTTP 408 (request timeout), 429 (rate limit), and all 5xx server errors
 //   - Network operation errors (connection failures, timeouts)
 //   - Temporary DNS errors
 //
