@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net"
+	"net/http"
 	"net/url"
 	"time"
 
@@ -29,7 +30,7 @@ func (e *HTTPStatusError) Error() string {
 
 // isRetryableError determines if an error should trigger a retry attempt.
 // Returns true for transient failures that might succeed on retry:
-// - HTTP 429 (rate limit), 502 (bad gateway), 503 (service unavailable), 504 (gateway timeout)
+// - HTTP 408 (request timeout), 429 (rate limit), and all 5xx server errors
 // - Network operation errors (connection failures, timeouts)
 // - Temporary DNS errors
 //
@@ -50,10 +51,9 @@ func isRetryableError(err error) bool {
 	// Check for HTTP status errors
 	var httpErr *HTTPStatusError
 	if errors.As(err, &httpErr) {
-		return httpErr.StatusCode == 429 ||
-			httpErr.StatusCode == 502 ||
-			httpErr.StatusCode == 503 ||
-			httpErr.StatusCode == 504
+		return httpErr.StatusCode == http.StatusRequestTimeout || // 408
+			httpErr.StatusCode == http.StatusTooManyRequests || // 429
+			httpErr.StatusCode >= 500 // all 5xx server errors
 	}
 
 	// Check for network operation errors

@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.2] - 2026-06-02
+
+### Changed
+
+- Broaden client retry policy to cover all transient server errors: retry HTTP 408, 429, and all 5xx responses (previously only 429/502/503/504), aligning with OpenAI/Anthropic SDK behavior. Transient 500s are now retried with the existing exponential backoff + jitter.
+
 ## [v0.1.1] - 2026-04-06
 
 ### Fixed

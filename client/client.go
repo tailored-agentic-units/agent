@@ -24,7 +24,7 @@ type Client interface {
 	HTTPClient() *http.Client
 
 	// Execute executes a protocol request and returns the parsed response.
-	// Automatically retries on transient failures (HTTP 429/502/503/504, network errors).
+	// Automatically retries on transient failures (HTTP 408/429 and 5xx, network errors).
 	Execute(ctx context.Context, req request.Request) (any, error)
 
 	// ExecuteStream executes a streaming protocol request and returns a channel of responses.
