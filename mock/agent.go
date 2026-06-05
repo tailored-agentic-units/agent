@@ -42,11 +42,11 @@ type MockAgent struct {
 // Use option functions to configure specific behaviors.
 func NewMockAgent(opts ...MockAgentOption) *MockAgent {
 	m := &MockAgent{
-		id:              "mock-agent-id",
-		mockClient:      NewMockClient(),
-		mockProvider:    NewMockProvider(),
-		mockFormat:      NewMockFormat(),
-		mockModel:       &model.Model{
+		id:           "mock-agent-id",
+		mockClient:   NewMockClient(),
+		mockProvider: NewMockProvider(),
+		mockFormat:   NewMockFormat(),
+		mockModel: &model.Model{
 			Name:    "mock-model",
 			Options: make(map[protocol.Protocol]map[string]any),
 		},

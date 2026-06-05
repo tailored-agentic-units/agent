@@ -169,8 +169,12 @@ func TestRegistry_ReplaceNotFound(t *testing.T) {
 func TestRegistry_List(t *testing.T) {
 	r := registry.NewRegistry()
 
-	r.Register("beta-agent", mockConfig("model-b", "chat", "vision"))
-	r.Register("alpha-agent", mockConfig("model-a", "chat", "tools"))
+	if err := r.Register("beta-agent", mockConfig("model-b", "chat", "vision")); err != nil {
+		t.Fatalf("Register failed: %v", err)
+	}
+	if err := r.Register("alpha-agent", mockConfig("model-a", "chat", "tools")); err != nil {
+		t.Fatalf("Register failed: %v", err)
+	}
 
 	infos := r.List()
 	if len(infos) != 2 {
@@ -210,10 +214,14 @@ func TestRegistry_Unregister(t *testing.T) {
 	r := registry.NewRegistry()
 
 	cfg := mockConfig("test-model", "chat")
-	r.Register("test-agent", cfg)
+	if err := r.Register("test-agent", cfg); err != nil {
+		t.Fatalf("Register failed: %v", err)
+	}
 
 	// Populate cache
-	r.Get("test-agent")
+	if _, err := r.Get("test-agent"); err != nil {
+		t.Fatalf("Get failed: %v", err)
+	}
 
 	if err := r.Unregister("test-agent"); err != nil {
 		t.Fatalf("Unregister failed: %v", err)
@@ -244,7 +252,9 @@ func TestRegistry_Capabilities(t *testing.T) {
 	r := registry.NewRegistry()
 
 	cfg := mockConfig("test-model", "chat", "tools", "embeddings")
-	r.Register("test-agent", cfg)
+	if err := r.Register("test-agent", cfg); err != nil {
+		t.Fatalf("Register failed: %v", err)
+	}
 
 	caps, err := r.Capabilities("test-agent")
 	if err != nil {
@@ -281,7 +291,9 @@ func TestRegistry_CapabilitiesNilModel(t *testing.T) {
 			BaseURL: "http://localhost:11434",
 		},
 	}
-	r.Register("no-model", cfg)
+	if err := r.Register("no-model", cfg); err != nil {
+		t.Fatalf("Register failed: %v", err)
+	}
 
 	caps, err := r.Capabilities("no-model")
 	if err != nil {
@@ -310,7 +322,9 @@ func TestRegistry_CapabilitiesInvalidKeysFiltered(t *testing.T) {
 			},
 		},
 	}
-	r.Register("mixed", cfg)
+	if err := r.Register("mixed", cfg); err != nil {
+		t.Fatalf("Register failed: %v", err)
+	}
 
 	caps, err := r.Capabilities("mixed")
 	if err != nil {
@@ -329,7 +343,9 @@ func TestRegistry_ConcurrentAccess(t *testing.T) {
 
 	for i := range 10 {
 		name := string(rune('a' + i))
-		r.Register(name, mockConfig("model-"+name, "chat"))
+		if err := r.Register(name, mockConfig("model-"+name, "chat")); err != nil {
+			t.Fatalf("Register failed: %v", err)
+		}
 	}
 
 	var wg sync.WaitGroup
@@ -338,10 +354,10 @@ func TestRegistry_ConcurrentAccess(t *testing.T) {
 			r.List()
 		})
 		wg.Go(func() {
-			r.Capabilities("a")
+			_, _ = r.Capabilities("a")
 		})
 		wg.Go(func() {
-			r.Get("b")
+			_, _ = r.Get("b")
 		})
 	}
 	wg.Wait()

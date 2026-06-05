@@ -120,7 +120,7 @@ func (c *client) execute(ctx context.Context, req request.Request) (any, error) 
 		c.setHealthy(false)
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Check for non-OK status
 	if resp.StatusCode != http.StatusOK {
@@ -229,7 +229,7 @@ func (c *client) executeStream(ctx context.Context, req request.Request) (<-chan
 	// Check status code
 	if resp.StatusCode != http.StatusOK {
 		bodyBytes, _ := io.ReadAll(resp.Body)
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		c.setHealthy(false)
 		return nil, fmt.Errorf("streaming request failed with status %d: %s", resp.StatusCode, string(bodyBytes))
 	}
@@ -241,14 +241,14 @@ func (c *client) executeStream(ctx context.Context, req request.Request) (<-chan
 	}
 
 	if f == nil {
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		c.setHealthy(false)
 		return nil, fmt.Errorf("request does not provide a format for stream parsing")
 	}
 
 	streamReader := prov.Stream()
 	if streamReader == nil {
-		resp.Body.Close()
+		_ = resp.Body.Close()
 		c.setHealthy(false)
 		return nil, fmt.Errorf("provider does not support streaming")
 	}
@@ -259,7 +259,7 @@ func (c *client) executeStream(ctx context.Context, req request.Request) (<-chan
 	output := make(chan *response.StreamingResponse)
 	go func() {
 		defer close(output)
-		defer resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 
 		for line := range lines {
 			if line.Err != nil {

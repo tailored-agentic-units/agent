@@ -357,7 +357,7 @@ func TestAgent_Model(t *testing.T) {
 
 	mdl := a.Model()
 	if mdl == nil {
-		t.Error("Model() returned nil")
+		t.Fatal("Model() returned nil")
 	}
 
 	if mdl.Name != "test-model" {

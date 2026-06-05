@@ -211,7 +211,7 @@ func TestMockAgent_Model(t *testing.T) {
 
 	m := agent.Model()
 	if m == nil {
-		t.Error("Model() returned nil")
+		t.Fatal("Model() returned nil")
 	}
 
 	if m.Name != "mock-model" {
